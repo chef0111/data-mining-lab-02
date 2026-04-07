@@ -1,0 +1,126 @@
+
+=================================================================
+EXERCISE 2: Online_Retail.xlsx
+=================================================================
+
+--- Q1: Read and clean Online_Retail.xlsx ---
+Raw shape: (541909, 8)
+
+Columns: ['InvoiceNo', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'UnitPrice', 'CustomerID', 'Country']
+
+Missing values:
+InvoiceNo           0
+StockCode           0
+Description      1454
+Quantity            0
+InvoiceDate         0
+UnitPrice           0
+CustomerID     135080
+Country             0
+dtype: int64
+
+Clean shape: (397884, 8)  (removed 144025 rows)
+  InvoiceNo StockCode                         Description  ...  UnitPrice CustomerID         Country
+0    536365    85123A  WHITE HANGING HEART T-LIGHT HOLDER  ...       2.55    17850.0  United Kingdom
+1    536365     71053                 WHITE METAL LANTERN  ...       3.39    17850.0  United Kingdom
+2    536365    84406B      CREAM CUPID HEARTS COAT HANGER  ...       2.75    17850.0  United Kingdom
+
+[3 rows x 8 columns]
+
+--- Q2: Transaction list ---
+Number of transactions: 18532
+Sample [0]: ['WHITE HANGING HEART T-LIGHT HOLDER', 'WHITE METAL LANTERN', 'CREAM CUPID HEARTS COAT HANGER', 'KNITTED UNION FLAG HOT WATER BOTTLE']
+
+--- Q3: Support function ---
+  compute_support(itemset, transactions) defined.
+
+--- Q4: Support of specific itemsets ---
+  support(['WHITE HANGING HEART T-LIGHT HOLDER']) = 0.106357
+  support(['JUMBO BAG RED RETROSPOT']) = 0.086337
+  support(['WHITE HANGING HEART T-LIGHT HOLDER', 'JUMBO BAG RED RETROSPOT']) = 0.013544
+  support(['REGENCY CAKESTAND 3 TIER', 'JUMBO BAG RED RETROSPOT']) = 0.008526
+
+--- Q5: Frequent 1-itemsets (min_support=0.02) ---
+Frequent 1-itemsets: 207
+  WHITE HANGING HEART T-LIGHT HOLDER            0.1064
+  REGENCY CAKESTAND 3 TIER                      0.0919
+  JUMBO BAG RED RETROSPOT                       0.0863
+  PARTY BUNTING                                 0.0744
+  ASSORTED COLOUR BIRD ORNAMENT                 0.0742
+
+--- Q6: Candidate 2-itemsets ---
+Candidate 2-itemsets: 21321
+
+--- Q7: Frequent 2-itemsets ---
+Frequent 2-itemsets: 35
+  {'JUMBO BAG RED RETROSPOT', 'JUMBO BAG PINK POLKADOT'}  0.0295
+  {'ROSES REGENCY TEACUP AND SAUCER ', 'GREEN REGENCY TEACUP AND SAUCER'}  0.0292
+  {'ALARM CLOCK BAKELIKE GREEN', 'ALARM CLOCK BAKELIKE RED '}  0.0286
+  {'LUNCH BAG RED RETROSPOT', 'LUNCH BAG PINK POLKADOT'}  0.0282
+  {'LUNCH BAG  BLACK SKULL.', 'LUNCH BAG RED RETROSPOT'}  0.0279
+
+--- Q8: Confidence function ---
+  confidence(['REGENCY CAKESTAND 3 TIER'] -> ['JUMBO BAG RED RETROSPOT']) = 0.0928
+
+--- Q9: Apriori on Online Retail (min_support=0.02) ---
+Frequent itemsets (Apriori): 243
+  1-itemsets: 207
+  2-itemsets: 35
+  3-itemsets: 1
+
+--- Q10: One-hot encoding ---
+Shape: (18532, 3877)
+   4 PURPLE FLOCK DINNER CANDLES  ...  I LOVE LONDON MINI RUCKSACK
+0                          False  ...                        False
+1                          False  ...                        False
+2                          False  ...                        False
+
+[3 rows x 5 columns]
+
+--- Q11: mlxtend Apriori results ---
+      support                                         itemsets
+192  0.106357  frozenset({WHITE HANGING HEART T-LIGHT HOLDER})
+154  0.091895            frozenset({REGENCY CAKESTAND 3 TIER})
+81   0.086337             frozenset({JUMBO BAG RED RETROSPOT})
+124  0.074412                       frozenset({PARTY BUNTING})
+11   0.074196       frozenset({ASSORTED COLOUR BIRD ORNAMENT})
+
+--- Q12: FP-Growth (min_support=0.02) ---
+Frequent itemsets (FP-Growth): 243
+      support                                         itemsets
+0    0.106357  frozenset({WHITE HANGING HEART T-LIGHT HOLDER})
+120  0.091895            frozenset({REGENCY CAKESTAND 3 TIER})
+52   0.086337             frozenset({JUMBO BAG RED RETROSPOT})
+164  0.074412                       frozenset({PARTY BUNTING})
+2    0.074196       frozenset({ASSORTED COLOUR BIRD ORNAMENT})
+
+--- Q13: Association rules (Online Retail, min_conf=0.3) ---
+Total rules: 68
+                                      antecedents                               consequents   support  confidence       lift
+0          frozenset({ALARM CLOCK BAKELIKE RED })   frozenset({ALARM CLOCK BAKELIKE GREEN})  0.028599    0.604333  14.194548
+1         frozenset({ALARM CLOCK BAKELIKE GREEN})    frozenset({ALARM CLOCK BAKELIKE RED })  0.028599    0.671736  14.194548
+2          frozenset({ALARM CLOCK BAKELIKE RED })    frozenset({ALARM CLOCK BAKELIKE PINK})  0.021368    0.451539  13.650778
+3          frozenset({ALARM CLOCK BAKELIKE PINK})    frozenset({ALARM CLOCK BAKELIKE RED })  0.021368    0.646003  13.650778
+4  frozenset({WOODEN PICTURE FRAME WHITE FINISH})  frozenset({WOODEN FRAME ANTIQUE WHITE })  0.025254    0.534247  12.207962
+
+--- Q14: Strong rules (confidence >= 0.7, lift >= 1.2) ---
+Number of strong rules: 8
+                                                                       antecedents                                                                     consequents   support  confidence       lift
+50   frozenset({ROSES REGENCY TEACUP AND SAUCER , PINK REGENCY TEACUP AND SAUCER})                                    frozenset({GREEN REGENCY TEACUP AND SAUCER})  0.021045    0.894495  23.989564
+51    frozenset({GREEN REGENCY TEACUP AND SAUCER, PINK REGENCY TEACUP AND SAUCER})                                   frozenset({ROSES REGENCY TEACUP AND SAUCER })  0.021045    0.847826  20.066300
+46                                     frozenset({PINK REGENCY TEACUP AND SAUCER})                                    frozenset({GREEN REGENCY TEACUP AND SAUCER})  0.024822    0.827338  22.188466
+48                                     frozenset({PINK REGENCY TEACUP AND SAUCER})                                   frozenset({ROSES REGENCY TEACUP AND SAUCER })  0.023527    0.784173  18.559754
+43                                    frozenset({GREEN REGENCY TEACUP AND SAUCER})                                   frozenset({ROSES REGENCY TEACUP AND SAUCER })  0.029193    0.782923  18.530185
+67                                 frozenset({GARDENERS KNEELING PAD CUP OF TEA })                                  frozenset({GARDENERS KNEELING PAD KEEP CALM })  0.024984    0.729134  17.873424
+49  frozenset({ROSES REGENCY TEACUP AND SAUCER , GREEN REGENCY TEACUP AND SAUCER})                                     frozenset({PINK REGENCY TEACUP AND SAUCER})  0.021045    0.720887  24.027846
+54                                     frozenset({PINK REGENCY TEACUP AND SAUCER})  frozenset({ROSES REGENCY TEACUP AND SAUCER , GREEN REGENCY TEACUP AND SAUCER})  0.021045    0.701439  24.027846
+
+--- Q15: Plot min_support vs # Itemsets (Online Retail) ---
+  min_support=0.01  ->  973 frequent itemsets
+  min_support=0.02  ->  243 frequent itemsets
+  min_support=0.03  ->  91 frequent itemsets
+  min_support=0.04  ->  42 frequent itemsets
+  min_support=0.05  ->  17 frequent itemsets
+  min_support=0.07  ->  5 frequent itemsets
+  min_support=0.10  ->  1 frequent itemsets
+  -> Plot saved: outputs/plots/ex2_q15_support_plot.png

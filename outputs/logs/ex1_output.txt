@@ -1,0 +1,146 @@
+=================================================================
+EXERCISE 1: groceries.csv
+=================================================================
+
+--- Q1: Read groceries.csv into transactions ---
+Number of transactions : 9835
+Total number of items  : 43367
+Sample transaction[0]  : ['citrus fruit', 'semi-finished bread', 'margarine', 'ready soups']
+
+--- Q2: Unique items & top-10 most frequent ---
+Number of unique items : 169
+
+Top 10 most frequent items:
+   1. whole milk                          count=2513
+   2. other vegetables                    count=1903
+   3. rolls/buns                          count=1809
+   4. soda                                count=1715
+   5. yogurt                              count=1372
+   6. bottled water                       count=1087
+   7. root vegetables                     count=1072
+   8. tropical fruit                      count=1032
+   9. shopping bags                       count=969
+  10. sausage                             count=924
+
+--- Q3: Support of 1-itemsets (top-10 shown) ---
+  whole milk                          support=0.2555
+  other vegetables                    support=0.1935
+  rolls/buns                          support=0.1839
+  soda                                support=0.1744
+  yogurt                              support=0.1395
+  bottled water                       support=0.1105
+  root vegetables                     support=0.1090
+  tropical fruit                      support=0.1049
+  shopping bags                       support=0.0985
+  sausage                             support=0.0940
+
+--- Q4: Frequent 1-itemsets (min_support=0.01) ---
+Number of frequent 1-itemsets: 88
+  whole milk                          support=0.2555
+  other vegetables                    support=0.1935
+  rolls/buns                          support=0.1839
+  soda                                support=0.1744
+  yogurt                              support=0.1395
+
+--- Q5: Candidate & frequent 2-itemsets ---
+Candidate 2-itemsets : 3828
+Frequent 2-itemsets  : 213
+  {'whole milk', 'other vegetables'}  support=0.0748
+  {'whole milk', 'rolls/buns'}  support=0.0566
+  {'whole milk', 'yogurt'}  support=0.0560
+  {'whole milk', 'root vegetables'}  support=0.0489
+  {'root vegetables', 'other vegetables'}  support=0.0474
+
+--- Q6 & Q7: Apriori algorithm (min_support=0.01) ---
+
+  L1  (88 itemsets)
+    {'whole milk'}  support=0.2555
+    {'other vegetables'}  support=0.1935
+    {'rolls/buns'}  support=0.1839
+    ... (85 more)
+
+  L2  (213 itemsets)
+    {'whole milk', 'other vegetables'}  support=0.0748
+    {'whole milk', 'rolls/buns'}  support=0.0566
+    {'whole milk', 'yogurt'}  support=0.0560
+    ... (210 more)
+
+  L3  (32 itemsets)
+    {'whole milk', 'root vegetables', 'other vegetables'}  support=0.0232
+    {'whole milk', 'yogurt', 'other vegetables'}  support=0.0223
+    {'whole milk', 'rolls/buns', 'other vegetables'}  support=0.0179
+    ... (29 more)
+
+--- Q8: One-hot encoding ---
+Shape: (9835, 169)
+   Instant food products  UHT-milk  ...  baby cosmetics  baby food
+0                  False     False  ...           False      False
+1                  False     False  ...           False      False
+2                  False     False  ...           False      False
+
+[3 rows x 6 columns]
+
+--- Q9: mlxtend Apriori (min_support=0.01) ---
+Frequent itemsets: 333
+     support                       itemsets
+86  0.255516        frozenset({whole milk})
+55  0.193493  frozenset({other vegetables})
+66  0.183935        frozenset({rolls/buns})
+75  0.174377              frozenset({soda})
+87  0.139502            frozenset({yogurt})
+
+--- Q10: mlxtend FP-Growth (min_support=0.01) ---
+Frequent itemsets: 333
+     support                       itemsets
+6   0.255516        frozenset({whole milk})
+9   0.193493  frozenset({other vegetables})
+13  0.183935        frozenset({rolls/buns})
+24  0.174377              frozenset({soda})
+3   0.139502            frozenset({yogurt})
+
+--- Q11: Association rules (min_confidence=0.2) ---
+Total rules: 234
+                 antecedents                    consequents   support  confidence      lift
+0  frozenset({citrus fruit})        frozenset({whole milk})  0.030503    0.368550  1.442377
+1  frozenset({citrus fruit})            frozenset({yogurt})  0.021657    0.261671  1.875752
+2  frozenset({citrus fruit})    frozenset({tropical fruit})  0.019929    0.240786  2.294702
+3  frozenset({citrus fruit})  frozenset({other vegetables})  0.028876    0.348894  1.803140
+4  frozenset({citrus fruit})   frozenset({root vegetables})  0.017692    0.213759  1.961121
+
+--- Q12: Top 10 rules by confidence ---
+                                      antecedents                    consequents   support  confidence      lift
+10     frozenset({citrus fruit, root vegetables})  frozenset({other vegetables})  0.010371    0.586207  3.029608
+50   frozenset({root vegetables, tropical fruit})  frozenset({other vegetables})  0.012303    0.584541  3.020999
+109                     frozenset({yogurt, curd})        frozenset({whole milk})  0.010066    0.582353  2.279125
+78          frozenset({butter, other vegetables})        frozenset({whole milk})  0.011490    0.573604  2.244885
+55   frozenset({root vegetables, tropical fruit})        frozenset({whole milk})  0.011998    0.570048  2.230969
+163          frozenset({root vegetables, yogurt})        frozenset({whole milk})  0.014540    0.562992  2.203354
+222  frozenset({other vegetables, domestic eggs})        frozenset({whole milk})  0.012303    0.552511  2.162336
+201       frozenset({yogurt, whipped/sour cream})        frozenset({whole milk})  0.010880    0.524510  2.052747
+160      frozenset({root vegetables, rolls/buns})        frozenset({whole milk})  0.012710    0.523013  2.046888
+64       frozenset({pip fruit, other vegetables})        frozenset({whole milk})  0.013523    0.517510  2.025351
+
+--- Q13: Rules with consequent = 'whole milk' ---
+Rules → whole milk: 73
+                                      antecedents              consequents   support  confidence      lift
+109                     frozenset({yogurt, curd})  frozenset({whole milk})  0.010066    0.582353  2.279125
+78          frozenset({butter, other vegetables})  frozenset({whole milk})  0.011490    0.573604  2.244885
+55   frozenset({root vegetables, tropical fruit})  frozenset({whole milk})  0.011998    0.570048  2.230969
+163          frozenset({root vegetables, yogurt})  frozenset({whole milk})  0.014540    0.562992  2.203354
+222  frozenset({other vegetables, domestic eggs})  frozenset({whole milk})  0.012303    0.552511  2.162336
+201       frozenset({yogurt, whipped/sour cream})  frozenset({whole milk})  0.010880    0.524510  2.052747
+160      frozenset({root vegetables, rolls/buns})  frozenset({whole milk})  0.012710    0.523013  2.046888
+64       frozenset({pip fruit, other vegetables})  frozenset({whole milk})  0.013523    0.517510  2.025351
+41            frozenset({yogurt, tropical fruit})  frozenset({whole milk})  0.015150    0.517361  2.024770
+32          frozenset({yogurt, other vegetables})  frozenset({whole milk})  0.022267    0.512881  2.007235
+
+--- Q14: Effect of thresholds ---
+  min_support=0.01  ->  333 frequent itemsets
+  min_support=0.02  ->  122 frequent itemsets
+  min_support=0.03  ->  63 frequent itemsets
+  min_support=0.05  ->  31 frequent itemsets
+  min_conf=0.2      ->  234 rules
+  min_conf=0.4      ->  62 rules
+  min_conf=0.6      ->  0 rules
+  min_conf=0.8      ->  0 rules
+  -> Plot saved: outputs/plots/ex1_q14_thresholds.png
